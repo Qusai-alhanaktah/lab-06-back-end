@@ -23,10 +23,14 @@ server.get('/location', (request, response)=>{
 })
 
 server.get('/weather' , (request , response)=>{
-    const wheatherData = require('./data/darksky.json');
+    const weatherData = require('./data/darksky.json');
+        for (let i = 0; i < weatherData.daily.data.length; i++) {
+            let date = new Date(weatherData.daily.data[i].time * 1000).toString()
+            let forecast =weatherData.daily.data[i].summary;
+            new Weather(forecast,date);
 
-    const wheather = new Whather(wheatherData);
-    response.status(200).send(wheather);
+        }
+            response.status(200).send( Weather.all);
 })
 
 
@@ -36,7 +40,7 @@ server.use('*' , (request , response) =>{
     response.status(404).send('its not found ')
 });
 server.use((error ,request , response) =>{
-    response.status(500).send(error);
+    response.status(500).send("Sorry, something went wrong");
 });
 
 
@@ -54,16 +58,11 @@ function Location (data){
     this.longitude= data[0].lon
     
 } 
-
-function Whather (data){
-     for (let i = 0; i < data.daily.data.length; i++) {
-         var date = new Date(data.daily.data[i].time * 1000).toString()
-        //  this.forecast =data.daily.data[i].summary;
-        this.forecast = data.daily.data[i].summmary;
-        console.log(this.forecast);
-         this.time =date;
-         Whather.all.push(this);
-         console.log(this); 
-        }
+// consturtor function weather
+function Weather (forecast,date){
+        this.forecast = forecast;
+        this.time =date;
+        Weather.all.push(this);
+    console.log( Weather.all); 
 }
-Whather.all=[]
+Weather.all=[]
