@@ -24,6 +24,7 @@ server.get('/location', (request, response)=>{
 
 server.get('/weather' , (request , response)=>{
     const wheatherData = require('./data/darksky.json');
+
     const wheather = new Whather(wheatherData);
     response.status(200).send(wheather);
 })
@@ -55,8 +56,14 @@ function Location (data){
 } 
 
 function Whather (data){
-this.forecast =data.daily.summary;
-this.time =data.daily.data[0].time
-// var date = new Date(data.daily.data[0].time * 1000);
-//     console.log(date.toUTCString())
+     for (let i = 0; i < data.daily.data.length; i++) {
+         var date = new Date(data.daily.data[i].time * 1000).toString()
+        //  this.forecast =data.daily.data[i].summary;
+        this.forecast = data.daily.data[i].summmary;
+        console.log(this.forecast);
+         this.time =date;
+         Whather.all.push(this);
+         console.log(this); 
+        }
 }
+Whather.all=[]
