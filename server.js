@@ -26,7 +26,7 @@ server.get('/location', (request, response) => {
 server.get('/weather', (request, response) => {
     const weatherData = require('./data/darksky.json');
     for (let i = 0; i < weatherData.daily.data.length; i++) {
-        let date = new Date(weatherData.daily.data[i].time * 1000).toString()
+        let date = new Date(weatherData.daily.data[i].time * 1000).toDateString();
         let forecast = weatherData.daily.data[i].summary;
         new Weather(forecast, date);
     }
